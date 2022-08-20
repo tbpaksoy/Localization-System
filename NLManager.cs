@@ -168,7 +168,7 @@ namespace Tahsin
                         foreach (NaturalLanguage nl in languages) 
                         {
                             GUI.color = nl.IsFontContainsAllOfTheCharacters(fontToCheck)? _compatible : _uncompatible;
-                            GUILayout.Label(nl.name);
+                            GUILayout.Label(nl.languageName + $" ({nl.originalName})");
                             GUI.color = Color.white;
                         }
                     }

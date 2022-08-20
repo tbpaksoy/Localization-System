@@ -13,18 +13,15 @@ namespace Tahsin
         public string lowerAlphabet = "abcdefghijklmnopqrstuwvxyz";
         public string upperAlphabet = "ABCDEFGHIJKLMNOQPRSTUWVXYZ";
         public Font font;
-        public bool IsFontContainsAllOfTheCharacters() 
-        {
-            if (font == null) return false;
-            foreach (char c in lowerAlphabet) 
-            {
-                if (!font.HasCharacter(c)) return false;
-            }
-            return true;
-        }
+        public bool IsFontContainsAllOfTheCharacters() => IsFontContainsAllOfTheCharacters(font);
         public bool IsFontContainsAllOfTheCharacters(Font font)
         {
             if (font == null) return false;
+            if (font.dynamic && font.name != "Arial")
+            {
+                Debug.LogWarning("The font check system does not work with dynamic fonts.");
+                return false;
+            }
             foreach (char c in lowerAlphabet)
             {
                 if (!font.HasCharacter(c)) return false;
