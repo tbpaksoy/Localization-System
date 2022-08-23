@@ -19,7 +19,7 @@ namespace Tahsin
         }
         private enum AnalyzeSubmod
         {
-            ErrorCheck, Alphabet, Font
+            ErrorCheck, Alphabet, Font, Text
         }
         private Mode mode;
         private AnalyzeSubmod analyzeSubmod;
@@ -32,6 +32,7 @@ namespace Tahsin
         private List<Font> fontsToCheck = new();
         private int languagesToCheck_count;
         private int fontsToCheck_count;
+        private string textToCheck;
         [SerializeReference]
         private NaturalLanguage[] _languages;
         #endregion
@@ -91,7 +92,7 @@ namespace Tahsin
         }
         private void AnalyzeMode()
         {
-            analyzeSubmod = (AnalyzeSubmod)EditorGUILayout.EnumPopup(analyzeSubmod);
+            analyzeSubmod = (AnalyzeSubmod)EditorGUILayout.EnumPopup("Submod",analyzeSubmod);
             switch (analyzeSubmod)
             {
                 case AnalyzeSubmod.ErrorCheck:
@@ -196,6 +197,39 @@ namespace Tahsin
                             GUI.color = Color.white;
                         }
                         
+                    }
+                    break;
+                case AnalyzeSubmod.Text:
+                    textToCheck = EditorGUILayout.TextArea(textToCheck);
+                    fontsToCheck_count = EditorGUILayout.IntField("Count", fontsToCheck_count);
+                    while (fontsToCheck.Count < fontsToCheck_count)
+                    {
+                        fontsToCheck.Add(null);
+                    }
+                    while (fontsToCheck.Count > fontsToCheck_count)
+                    {
+                        fontsToCheck.RemoveAt(fontsToCheck.Count - 1);
+                    }
+                    for (int i = 0; i < fontsToCheck.Count; i++)
+                    {
+                        GUI.color = _compatible;
+                        if (fontsToCheck[i] != null) 
+                        {
+                            foreach (char c in textToCheck)
+                            {
+                                if (!fontsToCheck[i].HasCharacter(c))
+                                {
+                                    GUI.color = _uncompatible;
+                                    break;
+                                }
+                            } 
+                        }
+                        else 
+                        {
+                            GUI.color = _uncompatible;
+                        }
+                        fontsToCheck[i] = (Font)EditorGUILayout.ObjectField(fontsToCheck[i] == null ? null : fontsToCheck[i].name, fontsToCheck[i], typeof(Font), false);
+                        GUI.color = Color.white;
                     }
                     break;
             }
